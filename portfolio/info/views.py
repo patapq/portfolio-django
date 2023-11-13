@@ -54,12 +54,13 @@ def schedule(request):
     addgroup = 'ЦК-ДО-5'
     schedule = get_table(group, week)
     add_schedule = get_table(addgroup, week)
+
     for day in schedule:
         for add_day in add_schedule:
             if add_day['day_name'] == day['day_name']:
                 day['subjects'].extend(add_day['subjects'])
 
-    context = {'schedule': schedule}
+    context = {'schedule': schedule, 'groups': [group, addgroup]}
 
     return render(request, 'info/schedule.html', context)
     # print(context)

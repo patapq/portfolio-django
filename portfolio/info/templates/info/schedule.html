@@ -66,13 +66,13 @@
     </style>
 
 
-    <h1>Table Data</h1>
+    <h1>Расписание для групп {{ groups.0 }} и {{ groups.1 }}</h1>
     <div class="container">
         <div class="row">
             <div class="col">
                 {% for day in schedule|slice:":3" %}
                 <h2>{{ day.day_name }}</h2>
-                <ul>
+                <ul>Расписание для групп ПИ-1-21 и ЦК-ДО-5
                     {% for item in day.subjects %}
                     <li>
                         <p><strong>{{ forloop.counter }}) </strong>{{ item.time }}</p>
