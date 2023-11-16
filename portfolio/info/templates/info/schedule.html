@@ -72,7 +72,7 @@
             <div class="col">
                 {% for day in schedule|slice:":3" %}
                 <h2>{{ day.day_name }}</h2>
-                <ul>Расписание для групп ПИ-1-21 и ЦК-ДО-5
+                <ul>
                     {% for item in day.subjects %}
                     <li>
                         <p><strong>{{ forloop.counter }}) </strong>{{ item.time }}</p>

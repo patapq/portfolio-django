@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import pprint
 
 
 def get_week():
@@ -48,28 +49,26 @@ def get_table(group, week):
 
     return days_list
 
+
 def schedule(request):
     week = get_week()
     group = 'ПИ-1-21'
     addgroup = 'ЦК-ДО-5'
     schedule = get_table(group, week)
     add_schedule = get_table(addgroup, week)
-
+    # print(pprint.pprint(schedule))
+    print(pprint.pprint(add_schedule))
     for day in schedule:
         for add_day in add_schedule:
-            if add_day['day_name'] == day['day_name']:
+            # print(pprint.pprint(day))
+            # print(pprint.pprint(add_day))
+
+            if add_day['day_name'].split(',')[0] == day['day_name'].split(',')[0]:
                 day['subjects'].extend(add_day['subjects'])
+                # print(pprint.pprint(day))
+                # print(pprint.pprint(add_day))
+
 
     context = {'schedule': schedule, 'groups': [group, addgroup]}
 
     return render(request, 'info/schedule.html', context)
-    # print(context)
-    # another_group_context = get_table(addgroup, week)
-    # for day, day_info in another_group_context.items():
-    #     day_items = context['schedule'].setdefault(day, {'subjects': {}})
-    #     last_index = max(day_items['subjects'].keys(), default=0)
-    #     for index, item_info in day_info['subjects'].items():
-    #         day_items['subjects'][last_index + index] = item_info
-
-    # print(context['days'])
-    # print(len(context['days']))
