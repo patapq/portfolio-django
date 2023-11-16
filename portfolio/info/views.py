@@ -4,7 +4,7 @@ from django.http import HttpResponse
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import pprint
+from pprint import pprint
 
 
 def get_week():
@@ -56,17 +56,12 @@ def schedule(request):
     addgroup = 'ЦК-ДО-5'
     schedule = get_table(group, week)
     add_schedule = get_table(addgroup, week)
-    # print(pprint.pprint(schedule))
-    print(pprint.pprint(add_schedule))
+    # pprint(schedule)
+    # pprint(add_schedule)
     for day in schedule:
         for add_day in add_schedule:
-            # print(pprint.pprint(day))
-            # print(pprint.pprint(add_day))
-
             if add_day['day_name'].split(',')[0] == day['day_name'].split(',')[0]:
                 day['subjects'].extend(add_day['subjects'])
-                # print(pprint.pprint(day))
-                # print(pprint.pprint(add_day))
 
 
     context = {'schedule': schedule, 'groups': [group, addgroup]}
