@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from pprint import pprint
 
 
 def get_week():
@@ -11,13 +12,6 @@ def get_week():
     start_week = datetime.now().replace(month=9, day=1).isocalendar()[1]
     week = current_week - start_week + 1
     return week
-
-
-
-def index(request):
-    context = {}
-    return render(request, 'info/index.html', context)
-
 
 
 def get_table(group, week):
@@ -48,27 +42,29 @@ def get_table(group, week):
 
     return days_list
 
+
+
+def index(request):
+    context = {}
+    return render(request, 'info/index.html', context)
+
+
+
 def schedule(request):
     week = get_week()
     group = 'ПИ-1-21'
     addgroup = 'ЦК-ДО-5'
     schedule = get_table(group, week)
     add_schedule = get_table(addgroup, week)
+
     for day in schedule:
         for add_day in add_schedule:
-            if add_day['day_name'] == day['day_name']:
+            if add_day['day_name'].split(',')[0] == day['day_name'].split(',')[0]:
+                if len(day['day_name']) < len(add_day['day_name']):
+                    day['day_name'] = add_day['day_name']
                 day['subjects'].extend(add_day['subjects'])
 
-    context = {'schedule': schedule}
+
+    context = {'schedule': schedule, 'groups': [group, addgroup]}
 
     return render(request, 'info/schedule.html', context)
-    # print(context)
-    # another_group_context = get_table(addgroup, week)
-    # for day, day_info in another_group_context.items():
-    #     day_items = context['schedule'].setdefault(day, {'subjects': {}})
-    #     last_index = max(day_items['subjects'].keys(), default=0)
-    #     for index, item_info in day_info['subjects'].items():
-    #         day_items['subjects'][last_index + index] = item_info
-
-    # print(context['days'])
-    # print(len(context['days']))
