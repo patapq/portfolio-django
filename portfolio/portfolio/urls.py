@@ -19,13 +19,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from info import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('info/', include('info.urls'))
+    path('info/', views.index, name='info'),
+    path('schedule/', views.schedule, name='schedule')
 ]
 
-from django.views.generic import RedirectView
-urlpatterns += [
-    path('', RedirectView.as_view(url='/info/', permanent=True)),
-]
+# from django.views.generic import RedirectView
+# urlpatterns += [
+    # path('', RedirectView.as_view(url='/schedule', permanent=True)),
+# ]

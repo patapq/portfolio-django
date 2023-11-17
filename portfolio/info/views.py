@@ -14,13 +14,6 @@ def get_week():
     return week
 
 
-
-def index(request):
-    context = {}
-    return render(request, 'info/index.html', context)
-
-
-
 def get_table(group, week):
     req = requests.get(f'https://eners.kgeu.ru/apish2.php?group={group}&week={week}&type=one')
     src = req.text
@@ -50,17 +43,25 @@ def get_table(group, week):
     return days_list
 
 
+
+def index(request):
+    context = {}
+    return render(request, 'info/index.html', context)
+
+
+
 def schedule(request):
     week = get_week()
     group = 'ПИ-1-21'
     addgroup = 'ЦК-ДО-5'
     schedule = get_table(group, week)
     add_schedule = get_table(addgroup, week)
-    # pprint(schedule)
-    # pprint(add_schedule)
+
     for day in schedule:
         for add_day in add_schedule:
             if add_day['day_name'].split(',')[0] == day['day_name'].split(',')[0]:
+                if len(day['day_name']) < len(add_day['day_name']):
+                    day['day_name'] = add_day['day_name']
                 day['subjects'].extend(add_day['subjects'])
 
 
