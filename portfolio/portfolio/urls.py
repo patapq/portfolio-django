@@ -29,5 +29,5 @@ urlpatterns = [
 
 from django.views.generic import RedirectView
 urlpatterns += [
-    path('', RedirectView.as_view(url='/schedule', permanent=True)),
+    path('', RedirectView.as_view(url='/schedule/', permanent=True)),
 ]
