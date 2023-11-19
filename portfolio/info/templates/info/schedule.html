@@ -19,7 +19,7 @@
             font-weight: 400;
             line-height: 1.5;
             color: #CCCCCC;
-            text-align: left;
+            /* text-align: left; */
         }
 
         h1 {
@@ -32,7 +32,7 @@
             border: 0%; */
             line-height: 0.5;
         }
-    
+
         .row {
             display: flex;
             flex-wrap: wrap;
@@ -63,11 +63,89 @@
             border-style: solid;
             border-color: #808080;
         }
+
+        .custom-select {
+            min-width: 350px;
+            position: relative;
+        }
+
+        select {
+            appearance: none;
+            /*  safari  */
+            -webkit-appearance: none;
+            /*  other styles for aesthetics */
+            width: 100%;
+            font-size: 1.15rem;
+            padding: 0.675em 6em 0.675em 1em;
+            background-color: #ffffff73;
+            border: 1px solid #caced1;
+            border-radius: 0.25rem;
+            color: #000;
+            cursor: pointer;
+        }
+
+        .custom-select::before,
+        .custom-select::after {
+            --size: 0.3rem;
+            content: "";
+            position: absolute;
+            right: 1rem;
+            pointer-events: none;
+        }
+
+        .custom-select::before {
+            border-left: var(--size) solid transparent;
+            border-right: var(--size) solid transparent;
+            border-bottom: var(--size) solid black;
+            top: 40%;
+        }
+
+        .custom-select::after {
+            border-left: var(--size) solid transparent;
+            border-right: var(--size) solid transparent;
+            border-top: var(--size) solid black;
+            top: 55%;
+        }
+
+        input[type=submit] {
+            padding: 5px 15px;
+            background: #ffffff73;
+            border: 0 none;
+            cursor: pointer;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+        }
     </style>
 
 
-    <h1>Расписание для групп {{ groups.0 }} и {{ groups.1 }}</h1>
+    <!-- <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form> -->
+
+
     <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            <div style="text-align: center;">
+                <h1 style="display: inline-block;">Расписание для групп</h1>
+
+                <div class="custom-select" style="display: inline-block;">
+                    <select name="group" id="group" style="width: 335px;">
+                        <option value="" selected disabled hidden>{{ groups.0 }}</option>
+                        <option value="ПИ-1-21">ПИ-1-21</option>
+                        <option value="ПИ-2-21">ПИ-2-21</option>
+                        <option value="ТРП-1-21">ТРП-1-21</option>
+                    </select>
+                </div>
+                <h1 style="display: inline-block;">и ЦК-ДО-5</h1>
+            </div>
+            <div style="text-align: center;">
+                <input type="submit" value="Открыть">
+            </div>
+        </form>
+
         <div class="row">
             <div class="col">
                 {% for day in schedule|slice:":3" %}
